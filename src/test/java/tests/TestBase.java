@@ -7,25 +7,14 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import org.testng.ITestResult;
 
-import org.testng.annotations.AfterMethod;
-
-import org.testng.annotations.AfterTest;
-
-import org.testng.annotations.BeforeMethod;
-
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.*;
 
 import utils.BrowserUtils;
 
 import utils.ConfigurationReader;
 
 import utils.Driver;
-
-
-
 import java.io.IOException;
-
-
 
 //this class will be a test foundation for all test classes
 
@@ -45,29 +34,39 @@ public abstract class TestBase {
 
 // * ExtentXReporter extentx = new ExtentXReporter("localhost");
 
+    protected static ExtentReports extentReports;
+
+    //    The ExtentHtmlReporter creates a rich standalone HTML file. It allows several
+
+    protected static ExtentHtmlReporter extentHtmlReporter;
+
+    //    Defines a test. You can add logs, snapshots, assign author and categories to a test and its children.
+
+    protected static ExtentTest extentTest;
 
 
-    protected ExtentReports extentReports;
 
-//    The ExtentHtmlReporter creates a rich standalone HTML file. It allows several
-
-    protected ExtentHtmlReporter extentHtmlReporter;
-
-//    Defines a test. You can add logs, snapshots, assign author and categories to a test and its children.
-
-    protected ExtentTest extentTest;
-
-
+    //        <parameter name="test" value="regression"></parameter>
 
     @BeforeTest
 
-    public void beforeTest(){
+    @Parameters({"test", "env_url"})
+
+    public void beforeTest(@Optional String test, @Optional String env_url) {
 
         //location of report
 
         //it's gonna be next to target folder, test-output folder
 
-        String filePath = System.getProperty("user.dir") + "/test-output/report.html";
+        String reportName = "report";
+
+        if (test != null) {
+
+            reportName = test;
+
+        }
+
+        String filePath = System.getProperty("user.dir") + "/test-output/" + reportName + ".html";
 
         extentReports = new ExtentReports();
 
@@ -79,7 +78,15 @@ public abstract class TestBase {
 
         //system information
 
-        extentReports.setSystemInfo("Environment", "QA1");
+        String env = ConfigurationReader.getProperty("url");
+
+        if (env_url != null) {
+
+            env = env_url;
+
+        }
+
+        extentReports.setSystemInfo("Environment", env);
 
         extentReports.setSystemInfo("Browser", ConfigurationReader.getProperty("browser"));
 
@@ -87,13 +94,13 @@ public abstract class TestBase {
 
     }
 
-    //please comeback at 12:17
+
 
 
 
     @AfterTest
 
-    public void afterTest(){
+    public void afterTest() {
 
 //         Writes test information from the started reporters to their output view
 
@@ -103,13 +110,25 @@ public abstract class TestBase {
 
 
 
-
+    //        <parameter name="env_url" value="https://qa3.vytrack.com/"></parameter>
 
     @BeforeMethod
 
-    public void setup(){
+    @Parameters("env_url")
+
+    public void setup(@Optional String env_url) {
 
         String url = ConfigurationReader.getProperty("url");
+
+        //if name parameter was set, then use it
+
+        //if it's null that means it was not set
+
+        if (env_url != null) {
+
+            url = env_url;
+
+        }
 
         Driver.get().get(url);
 
@@ -121,9 +140,9 @@ public abstract class TestBase {
 
     @AfterMethod
 
-    public void teardown(ITestResult result){
+    public void teardown(ITestResult result) {
 
-        if(result.getStatus() == ITestResult.FAILURE){
+        if (result.getStatus() == ITestResult.FAILURE) {
 
             extentTest.fail(result.getName());
 
@@ -147,15 +166,17 @@ public abstract class TestBase {
 
             }
 
-        }else if(result.getStatus() == ITestResult.SKIP){
+        } else if (result.getStatus() == ITestResult.SKIP) {
 
-            extentTest.skip("Test case was skipped : "+result.getName());
+            extentTest.skip("Test case was skipped : " + result.getName());
 
         }
 
         Driver.close();
 
     }
+
+
 
 
 

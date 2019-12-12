@@ -1,1 +1,13 @@
 blue
+red
+green
+black
+yellow
+purple
+navy blue
+pink
+white
+Orange
+cyan
+Azure
+French rose
