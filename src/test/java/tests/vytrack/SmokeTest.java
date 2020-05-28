@@ -2,6 +2,12 @@ package tests.vytrack;
 
 
 
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 
 import org.testng.annotations.DataProvider;
@@ -11,6 +17,10 @@ import org.testng.annotations.Test;
 import pages.LoginPage;
 
 import tests.TestBase;
+
+import utils.BrowserUtils;
+
+import utils.Driver;
 
 
 
@@ -42,6 +52,10 @@ public class SmokeTest extends TestBase {
 
 
 
+        loginPage.waitForPageSubTitle(pageSubTitle);
+
+
+
         Assert.assertEquals(loginPage.getPageSubTitle(), pageSubTitle);
 
 
@@ -51,6 +65,10 @@ public class SmokeTest extends TestBase {
 
 
     }
+
+
+
+
 
 
 
@@ -77,5 +95,4 @@ public class SmokeTest extends TestBase {
         };
 
     }
-
 }

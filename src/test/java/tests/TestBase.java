@@ -9,12 +9,19 @@ import org.testng.ITestResult;
 
 import org.testng.annotations.*;
 
+import org.testng.asserts.SoftAssert;
+
 import utils.BrowserUtils;
 
 import utils.ConfigurationReader;
 
 import utils.Driver;
+
+
+
 import java.io.IOException;
+
+
 
 //this class will be a test foundation for all test classes
 
@@ -34,6 +41,8 @@ public abstract class TestBase {
 
 // * ExtentXReporter extentx = new ExtentXReporter("localhost");
 
+
+
     protected static ExtentReports extentReports;
 
     //    The ExtentHtmlReporter creates a rich standalone HTML file. It allows several
@@ -46,7 +55,9 @@ public abstract class TestBase {
 
 
 
-    //        <parameter name="test" value="regression"></parameter>
+
+
+    //         <parameter name="test" value="regression"></parameter>
 
     @BeforeTest
 

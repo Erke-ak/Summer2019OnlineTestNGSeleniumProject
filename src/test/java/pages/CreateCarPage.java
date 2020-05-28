@@ -54,6 +54,18 @@ public class CreateCarPage extends BasePage {
 
 
 
+    @FindBy(name = "custom_entity_type[ModelYear]")
+
+    public WebElement modelYearElement;
+
+
+
+    @FindBy(name = "custom_entity_type[Color]")
+
+    public WebElement colorElement;
+
+
+
 
 
     /**
@@ -161,4 +173,5 @@ public class CreateCarPage extends BasePage {
         logoElement.sendKeys(pathToTheFile);
 
     }
+
 }
